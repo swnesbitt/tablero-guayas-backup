@@ -1,0 +1,13 @@
+/* University of Illinois brand for the Tablero de Guayas subpages: Illinois Blue header with an
+ * Illinois Orange rule, Montserrat headings, Source Sans 3 text. Loaded after each page's own styles. */
+:root{--illblue:#13294b;--ill:#ff5f05;--ink:#13294b;--ink2:#4b5a70;--muted:#707372;--line:#dde3ea;--bg:#f8fafc;--accent:#1d58a7}
+:root[data-theme="dark"]{--ink:#f2f2ee;--ink2:#b9c3d3;--line:#2e3542;--bg:#15161a;--accent:#8fb3ef}
+body{font-family:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Montserrat,"Source Sans 3",sans-serif}
+h1{color:var(--ink)}
+header{background:var(--illblue) !important;border-bottom:4px solid var(--ill) !important;color:#fff}
+header a.back{color:#fff !important}
+header button{background:transparent !important;color:#fff !important;border-color:rgba(255,255,255,.45) !important}
+header button:hover{border-color:#fff !important}
+.copy{max-width:1180px;margin:0 auto;padding:12px 16px 28px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+.copy a{color:var(--accent)}

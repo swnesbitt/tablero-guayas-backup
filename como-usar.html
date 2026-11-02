@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo usar · Tablero de Guayas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root{color-scheme:light;--bg:#fbfbfa;--panel:#ffffff;--ink:#15150f;--ink2:#55554c;--muted:#83837b;--line:#e3e3dc;--accent:#0b3d91;
+    --hl:#ff5f05;--ens:#1d58a7;--sum:#13294b;--obs:#00729a;--fc:#c84113;--riv:#1f6f8b}
+  :root[data-theme="dark"]{color-scheme:dark;--bg:#15161a;--panel:#1d1f24;--ink:#f2f2ee;--ink2:#b9b9b0;--muted:#8a8a80;--line:#2e3037;--accent:#5b9bf5;
+    --hl:#fb923c;--ens:#7fb0f7;--sum:#b9a2ef;--obs:#5fd3a6;--fc:#f0b45a;--riv:#67c3e0}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+  header a.back{color:var(--accent);text-decoration:none;font-weight:600}
+  header img{height:28px;border-radius:4px}
+  .spacer{flex:1}
+  button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 10px;cursor:pointer}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  main{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:28px;line-height:1.2;margin:0 0 6px;text-wrap:balance}
+  .lead{color:var(--ink2);max-width:72ch;margin:0 0 22px}
+  nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px}
+  nav.toc a{border:2px solid var(--c);color:var(--c);border-radius:999px;padding:3px 12px;text-decoration:none;font-size:13px;font-weight:600}
+  section{margin:0 0 30px}
+  section > h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--c);margin:0 0 10px;
+    padding-bottom:6px;border-bottom:2px solid var(--c)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+  .vid{aspect-ratio:16/9;max-width:100%;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;
+    justify-content:center;color:var(--muted);font-size:13px;text-align:center;padding:12px}
+  .vid iframe,.vid video{width:100%;height:100%;border:0;display:block}
+  .vid .soon{border:1px dashed var(--line);border-radius:8px;padding:10px 14px}
+  .card h3{font-size:16px;margin:12px 14px 4px}
+  .card p{margin:0 14px 14px;color:var(--ink2);font-size:14px}
+  footer{max-width:1180px;margin:0 auto;padding:0 16px 32px;color:var(--muted);font-size:13px}
+  footer a{color:var(--accent)}
+  .topic{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;background:var(--panel);border:1px solid var(--line);
+    border-top:4px solid var(--c);border-radius:10px;padding:16px;margin-bottom:14px}
+  .topic .vid{border:1px solid var(--line);border-radius:8px}
+  .topic h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+  .topic p{margin:0 0 10px;color:var(--ink2);font-size:14.5px}
+  .topic .key{background:var(--bg);border-left:4px solid var(--c);padding:8px 12px;border-radius:4px;color:var(--ink);font-size:14.5px}
+  .details{margin-top:4px}
+  .details summary{cursor:pointer;font-weight:600;color:var(--c);font-size:14px;padding:6px 0}
+  .details .grid{margin-top:8px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+  .details .card h3{font-size:15px;color:var(--ink);text-transform:none;letter-spacing:0;margin:12px 14px 4px}
+  @media (max-width:760px){.topic{grid-template-columns:1fr}}
+</style>
+<link rel="stylesheet" href="illinois.css?v=202611020137">
+</head>
+<body>
+<header>
+  <a class="back" href="./" id="back">← Tablero de Guayas</a>
+  <div class="spacer"></div>
+  <button id="lang">EN</button>
+</header>
+<main>
+  <h1 id="h1"></h1>
+  <p class="lead" id="lead"></p>
+  <nav class="toc" id="toc"></nav>
+  <div id="sections"></div>
+</main>
+<footer id="foot"></footer>
+<script src="help.js?v=202611020137"></script>
+<script>
+/* Tutorial portal. Each card shows its video once VIDEOS has a URL for it (YouTube embed URL or an .mp4 path);
+ * until then, the plain-language explanation from the dashboard's help text. */
+const VIDEOS = {
+  // v1: 'https://www.youtube-nocookie.com/embed/XXXXXXXX',
+  // v2: 'videos/v2.mp4',
+};
+const EXTRA = {
+  wrf: { es: 'WRF es un modelo numérico del tiempo: un programa que calcula cómo evolucionará la atmósfera. Lo corremos con cuadrículas de 3 km sobre Ecuador, lo bastante finas para ver tormentas individuales y el efecto de los Andes. Los modelos globales que lo alimentan (GFS de EE. UU., IFS de Europa) usan cuadrículas de unos 25 km.',
+         en: 'WRF is a numerical weather model: a program that calculates how the atmosphere will evolve. We run it on a 3 km grid over Ecuador, fine enough to see individual storms and the effect of the Andes. The global models that drive it (the US GFS, the European IFS) use grids of about 25 km.' },
+  ensemble: { es: 'En lugar de una sola corrida, hacemos 10 con condiciones iniciales y física algo distintas. Si las 10 coinciden, el pronóstico es más confiable; si difieren mucho, hay más incertidumbre. La mediana es el valor típico y el P90 un escenario húmedo razonable.',
+              en: 'Instead of one run, we make 10 with slightly different starting conditions and physics. If all 10 agree, the forecast is more reliable; if they differ a lot, there is more uncertainty. The median is the typical value and the P90 a reasonable wet scenario.' },
+  irvis: { es: 'Los satélites GOES miran la Tierra cada 10 minutos. El canal infrarrojo (IR) mide la temperatura de lo que ve: las nubes más frías son las más altas, y los colores intensos marcan tormentas fuertes. Funciona de día y de noche. El canal visible (VIS) es como una foto en blanco y negro y solo sirve de día.',
+           en: 'GOES satellites look at Earth every 10 minutes. The infrared (IR) channel measures the temperature of what it sees: the coldest clouds are the highest, and intense colors mark strong storms. It works day and night. The visible (VIS) channel is like a black-and-white photo and only works in daylight.' },
+};
+const T = {
+  es: { title: 'Cómo usar el Tablero de Guayas', back: '← Tablero de Guayas', btn: 'EN', soon: 'Video próximamente',
+        lead: 'Cinco videos cortos (30 a 60 segundos) explican el tablero a quien no es meteorólogo. Mientras se graban, cada tema resume lo esencial y abajo están las explicaciones detalladas.',
+        content: 'Qué cubre', keymsg: 'Mensaje clave', more: 'Explicaciones detalladas',
+        foot: 'Pronóstico no oficial del Departamento de Clima, Meteorología y Ciencias Atmosféricas, Universidad de Illinois. Consulte siempre los avisos y alertas oficiales del <a href="https://www.inamhi.gob.ec/" target="_blank" rel="noopener">INAMHI</a>. <a href="aviso-legal.html">Aviso legal</a> · <a href="quienes-somos.html">Quiénes somos</a>.' },
+  en: { title: 'How to use the Guayas Dashboard', back: '← Guayas Dashboard', btn: 'ES', soon: 'Video coming soon',
+        lead: 'Five short videos (30 to 60 seconds) explain the dashboard to non-meteorologists. Until they are recorded, each topic summarizes the essentials, with the detailed explanations below.',
+        content: 'What it covers', keymsg: 'Key message', more: 'Detailed explanations',
+        foot: 'Unofficial forecast of the Department of Climate, Meteorology &amp; Atmospheric Sciences, University of Illinois. Always check official warnings and alerts from <a href="https://www.inamhi.gob.ec/" target="_blank" rel="noopener">INAMHI</a>. <a href="aviso-legal.html">Legal notice</a> · <a href="quienes-somos.html">Who we are</a>.' },
+};
+/* Five videos; VIDEOS[v1..v5] takes a YouTube embed URL or an .mp4 path once each is recorded. */
+const TOPICS = [
+  { v: 'v1', c: '--sum',
+    t: { es: '1. ¿Qué es el Tablero de Guayas?', en: '1. What is the Guayas Dashboard?' },
+    content: { es: 'De dónde vienen los datos (modelo WRF a 3 km, ensamble de 10 corridas, satélite GOES, GEOGLOWS), cómo está organizada la página (resumen arriba, ensamble, observado y pronóstico) y cómo leer el resumen automático.',
+               en: 'Where the data come from (3 km WRF model, 10-run ensemble, GOES satellite, GEOGLOWS), how the page is organized (summary on top, ensemble, observed and forecast) and how to read the automatic summary.' },
+    key: { es: 'Es una herramienta de apoyo no oficial; las alertas oficiales son del INAMHI. Empiece por el resumen y luego confirme en los paneles.',
+           en: 'It is an unofficial support tool; official alerts come from INAMHI. Start with the summary, then confirm in the panels.' },
+    cards: [['wrf', 'What is WRF?', '¿Qué es WRF?', EXTRA], ['ensemble', 'Ensemble, median and P90', 'Ensamble, mediana y P90', EXTRA], ['summary', 'The automatic summary', 'El resumen automático']] },
+  { v: 'v2', c: '--ens',
+    t: { es: '2. Lluvia por cantón: mediana y P90', en: '2. Rain by canton: median and P90' },
+    content: { es: 'Elegir el día o el período de 12 horas, leer la lista de cantones, qué significan la mediana y el P90, los colores amarillo, naranja y rojo (25, 50 y 100 mm) y cómo descargar la tabla como imagen.',
+               en: 'Choosing the day or 12-hour period, reading the canton list, what the median and P90 mean, the yellow, orange and red colors (25, 50 and 100 mm) and how to download the table as an image.' },
+    key: { es: 'La mediana es lo más esperable; el P90 es un escenario húmedo plausible para planificar. Un cantón en rojo en el P90 pide atención aunque su mediana sea menor.',
+           en: 'The median is the most expected outcome; the P90 is a plausible wet scenario for planning. A canton in red at P90 needs attention even when its median is lower.' },
+    cards: [['period', 'Choosing the period', 'Elegir el período'], ['canton', 'The canton list', 'La lista de cantones'], ['median', 'Median rain', 'Lluvia mediana'], ['p90', 'P90: the wet scenario', 'P90: el escenario húmedo']] },
+  { v: 'v3', c: '--ens',
+    t: { es: '3. ¿Qué tan probable es? Mapas y gráficos', en: '3. How likely is it? Maps and charts' },
+    content: { es: 'Los mapas de probabilidad de 25, 50 y 100 mm, cómo hacer clic en un lugar para ver la lluvia hora por hora y la acumulada, y el viento máximo.',
+               en: 'The maps of the chance of 25, 50 and 100 mm, how to click a place to see hour-by-hour and accumulated rain, and the maximum wind.' },
+    key: { es: 'La probabilidad es la parte de las 10 corridas que alcanzan el umbral; una franja ancha en los gráficos significa más incertidumbre sobre cuándo llueve.',
+           en: 'Likelihood is the share of the 10 runs that reach the amount; a wide band in the charts means more uncertainty about when the rain falls.' },
+    cards: [['prob', 'Chance of 25, 50, 100 mm', 'Probabilidad de 25, 50, 100 mm'], ['hourly', 'Hourly rain chart', 'Gráfico de lluvia horaria'], ['accum', 'Accumulated rain chart', 'Gráfico de lluvia acumulada'], ['wind', 'Maximum wind', 'Viento máximo']] },
+  { v: 'v4', c: '--riv',
+    t: { es: '4. Ríos: percentil y período de retorno', en: '4. Rivers: percentile and return period' },
+    content: { es: 'Los mapas de caudal, percentil y período de retorno, cómo hacer clic en un río para ver su hidrograma y por qué no fijarse en los m³/s.',
+               en: 'The streamflow, percentile and return-period maps, how to click a river for its hydrograph, and why not to rely on the m³/s values.' },
+    key: { es: 'El período de retorno indica si un río se acerca a caudales de crecida; el percentil indica si viene alto para ese río. Use los dos, no los m³/s.',
+           en: 'The return period shows whether a river is approaching flood flows; the percentile shows whether it is running high for that river. Use both, not the m³/s.' },
+    cards: [['flow', 'Streamflow', 'Caudal'], ['pct', 'Percentile', 'Percentil'], ['rp', 'Return period', 'Período de retorno'], ['hydro', 'The hydrograph', 'El hidrograma']] },
+  { v: 'v5', c: '--obs',
+    t: { es: '5. Satélite y animaciones: lo observado y lo pronosticado', en: '5. Satellite and loops: observed and forecast' },
+    content: { es: 'IR y visible, la animación del satélite de las últimas horas, las nubes y la lluvia simuladas, cómo compararlas y cómo descargar los videos.',
+               en: 'IR and visible, the satellite loop of the last few hours, the simulated clouds and rain, how to compare them and how to download the videos.' },
+    key: { es: 'Si las tormentas observadas se parecen a las simuladas, hay más confianza en el pronóstico de las próximas horas.',
+           en: 'When the observed storms look like the simulated ones, there is more confidence in the forecast for the next few hours.' },
+    cards: [['irvis', 'Satellite: IR and visible', 'Satélite: IR y visible', EXTRA], ['goes', 'Observed satellite loop', 'Animación del satélite observado'], ['wrfloop', 'Simulated clouds', 'Nubes simuladas'], ['rainpanel', 'Simulated rain', 'Lluvia simulada']] },
+];
+let lang = 'es';
+try { lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('tg.lang') || 'es'; } catch (e) {}
+function media(v, title) {
+  const u = VIDEOS[v];
+  return !u ? `<div class="soon">${T[lang].soon}</div>`
+    : /\.mp4$/.test(u) ? `<video src="${u}" controls preload="metadata"></video>`
+    : `<iframe src="${u}" title="${title}" allowfullscreen loading="lazy"></iframe>`;
+}
+function card(key, en, es, src) {
+  const txt = (src || HELP)[key] || {};
+  return `<article class="card" id="${key}"><h3>${lang === 'es' ? es : en}</h3><p>${txt[lang] || txt.en || ''}</p></article>`;
+}
+function render() {
+  const L = T[lang];
+  document.documentElement.lang = lang; document.title = L.title;
+  document.getElementById('h1').textContent = L.title;
+  document.getElementById('lead').textContent = L.lead;
+  document.getElementById('back').textContent = L.back;
+  document.getElementById('lang').textContent = L.btn;
+  document.getElementById('foot').innerHTML = L.foot;
+  document.getElementById('toc').innerHTML = TOPICS.map((x, i) => `<a href="#t${i + 1}" style="--c:var(${x.c})">${x.t[lang]}</a>`).join('');
+  document.getElementById('sections').innerHTML = TOPICS.map((x, i) => `<section id="t${i + 1}" style="--c:var(${x.c})">
+    <div class="topic"><div class="vid">${media(x.v, x.t[lang])}</div>
+      <div><h2 style="border:0;margin:0 0 8px;padding:0;font-size:20px;text-transform:none;letter-spacing:0;color:var(--ink)">${x.t[lang]}</h2>
+        <h3>${L.content}</h3><p>${x.content[lang]}</p>
+        <h3>${L.keymsg}</h3><div class="key">${x.key[lang]}</div></div></div>
+    <details class="details"><summary>${L.more} (${x.cards.length})</summary><div class="grid">${x.cards.map((k) => card(...k)).join('')}</div></details>
+  </section>`).join('');
+}
+document.getElementById('lang').onclick = () => { lang = lang === 'es' ? 'en' : 'es'; try { localStorage.setItem('tg.lang', lang); } catch (e) {} render(); if (window.renderCopy) renderCopy(); };
+render();
+</script>
+<div id="copy" class="copy"></div>
+<script src="partners.js?v=202611020137"></script>
+<script src="copyright.js?v=202611020137"></script>
+</body>
+</html>

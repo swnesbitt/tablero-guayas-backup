@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiénes somos · Tablero de Guayas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root{color-scheme:light;--bg:#fbfbfa;--panel:#ffffff;--ink:#15150f;--ink2:#55554c;--muted:#83837b;--line:#e3e3dc;--accent:#0b3d91;--ill:#e84a27}
+  :root[data-theme="dark"]{color-scheme:dark;--bg:#15161a;--panel:#1d1f24;--ink:#f2f2ee;--ink2:#b9b9b0;--muted:#8a8a80;--line:#2e3037;--accent:#5b9bf5;--ill:#ff7a59}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+  header a.back{color:var(--accent);text-decoration:none;font-weight:600}
+  .spacer{flex:1}
+  button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 10px;cursor:pointer}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  main{max-width:1180px;margin:0 auto;padding:24px 16px 40px}
+  h1{font-size:28px;line-height:1.2;margin:0 0 6px;text-wrap:balance}
+  .lead{color:var(--ink2);max-width:75ch;margin:0 0 26px}
+  h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:28px 0 12px;
+    padding-bottom:6px;border-bottom:2px solid var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .person{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;
+    grid-template-columns:96px 1fr;gap:4px 14px;align-content:start}
+  .person img{width:96px;height:120px;object-fit:cover;border-radius:8px;grid-row:span 3;background:var(--line)}
+  .person h3{margin:0;font-size:16px}
+  .person .role{margin:0;font-size:13px;color:var(--ink2)}
+  .person p.bio{grid-column:1 / -1;margin:8px 0 0;font-size:14px;color:var(--ink)}
+  .person a.prof{font-size:12.5px;color:var(--accent)}
+  footer{max-width:1180px;margin:0 auto;padding:0 16px 32px;color:var(--muted);font-size:13px}
+  footer a{color:var(--accent)}
+  @media (max-width:420px){.grid{grid-template-columns:1fr}}
+</style>
+<link rel="stylesheet" href="illinois.css?v=202611020137">
+</head>
+<body>
+<header>
+  <a class="back" href="./" id="back">← Tablero de Guayas</a>
+  <div class="spacer"></div>
+  <button id="lang">EN</button>
+</header>
+<main>
+  <h1 id="h1"></h1>
+  <p class="lead" id="lead"></p>
+  <div id="groups"></div>
+</main>
+<footer id="foot"></footer>
+<script>
+/* Bios condensed from each person's profile on climas.illinois.edu or their department page (photos from the same pages). */
+const P = 'https://climas.illinois.edu/directory/profile/';
+const PEOPLE = [
+  { g: 0, id: 'snesbitt', name: 'Steve Nesbitt',
+    role: { es: 'Profesor; decano asociado de investigación, College of Liberal Arts & Sciences', en: 'Professor; Associate Dean for Research, College of Liberal Arts & Sciences' },
+    bio: { es: 'Investiga nubes y precipitación con observaciones avanzadas, computación de alto rendimiento e inteligencia artificial para mejorar la comprensión y la predicción del tiempo de alto impacto. Ha participado en más de 20 campañas de campo y fue investigador principal de RELAMPAGO (2018–2019) en Argentina. Fue jefe de CliMAS de 2023 a 2026 y tiene un nombramiento conjunto en Argonne National Laboratory.',
+           en: 'Studies clouds and precipitation using advanced observations, high-performance computing and artificial intelligence to improve understanding and prediction of high-impact weather. He has taken part in more than 20 field campaigns and was lead Principal Investigator of RELAMPAGO (2018–2019) in Argentina. He was head of CliMAS from 2023 to 2026 and holds a joint appointment at Argonne National Laboratory.' } },
+  { g: 0, id: 'francina', name: 'Francina Dominguez',
+    role: { es: 'Profesora; jefa adjunta y directora de estudios de posgrado', en: 'Professor; Associate Head and Director of Graduate Studies' },
+    bio: { es: 'Hidroclimatóloga. Estudia las interacciones entre la superficie terrestre y la atmósfera: cómo la variabilidad y el cambio climático, sobre todo los eventos extremos, afectan la hidrología, y cómo los cambios en la hidrología de superficie afectan al clima.',
+           en: 'A hydroclimatologist who studies land–atmosphere interactions: how climate variability and change, especially extreme events, affect surface hydrology, and how changes in surface hydrology affect climate.' } },
+  { g: 0, id: 'jet', name: 'Joseph Trujillo-Falcón',
+    role: { es: 'Profesor asistente (CliMAS y Departamento de Comunicación)', en: 'Assistant Professor (CliMAS and Department of Communication)' },
+    bio: { es: 'Dirige el laboratorio ALERTAS (Advancing Language Equity and Resilience in the Atmospheric Sciences), dedicado a mejorar la comunicación de información del tiempo y el clima en varios idiomas. Su trabajo ha impulsado cambios de política en NOAA y el Servicio Meteorológico Nacional de EE. UU. sobre comunicación multilingüe. Es meteorólogo bilingüe con experiencia en radio y televisión.',
+           en: 'Leads the ALERTAS lab (Advancing Language Equity and Resilience in the Atmospheric Sciences), dedicated to improving weather and climate communication in multiple languages. His work has driven policy changes on multilingual communication at NOAA and the US National Weather Service. He is an award-winning bilingual broadcast meteorologist.' } },
+  { g: 1, id: 'zhuowang', name: 'Zhuo Wang',
+    role: { es: 'Profesora', en: 'Professor' },
+    bio: { es: 'Investiga la dinámica del tiempo y el clima: ciclones tropicales y árticos, interacciones entre trópicos y latitudes medias, variabilidad de semanas a décadas, predicción y predictibilidad, y eventos extremos, con el fin de mejorar la capacidad de pronóstico.',
+           en: 'Researches weather and climate dynamics: tropical and Arctic cyclones, tropical–extratropical interactions, subseasonal-to-decadal variability, prediction and predictability, and extreme events, with the aim of improving prediction skill.' } },
+  { g: 1, id: 'jain1', name: 'Atul Jain',
+    role: { es: 'Profesor', en: 'Professor' },
+    bio: { es: 'Estudia el sistema Tierra con modelos computacionales avanzados. Su equipo desarrolló ISAM, un marco global que integra modelos y observaciones satelitales y de superficie para estudiar los ciclos biogeoquímicos, del agua y de la energía. Ha sido autor principal en evaluaciones del IPCC y es Fellow de AAAS y AGU.',
+           en: 'Studies the Earth system with advanced computational modeling. His team developed ISAM, a global framework that integrates models with satellite and ground observations to study biogeochemical, water and energy cycles. He has been a lead author on IPCC assessments and is a Fellow of AAAS and AGU.' } },
+  { g: 1, id: 'kevintg2', name: 'Kevin Gray',
+    role: { es: 'Investigador posdoctoral', en: 'Postdoctoral researcher' },
+    bio: { es: 'Su investigación analiza simulaciones de tormentas severas con el modelo WRF y de supercélulas con el modelo CM1. Antes de su posgrado trabajó en sistemas de información vial y meteorológica para departamentos de transporte.',
+           en: 'His research analyzes simulations of severe thunderstorms with the WRF model and of supercells with the CM1 model. Before graduate school he worked on road-weather information systems for state transportation departments.' } },
+  { g: 1, id: 'bonifer2', name: 'Kaylie Bonifer',
+    role: { es: 'Estudiante de doctorado (asesores: Joseph Trujillo-Falcón y Steve Nesbitt)', en: 'PhD student (advisors: Joseph Trujillo-Falcón and Steve Nesbitt)' },
+    bio: { es: 'Estudia la comunicación de amenazas meteorológicas para usuarios como los gestores de emergencias. En el laboratorio ALERTAS lidera el estudio de cómo perciben el riesgo los gestores de emergencias ante distintas amenazas. Tiene certificados en gestión de emergencias y en sistemas de información geográfica.',
+           en: 'Studies weather hazard communication for users such as emergency managers. In the ALERTAS lab she leads work on how emergency managers perceive the risk of different hazards. She holds certificates in emergency management and geographic information systems.' } },
+  { g: 1, id: 'zoenc2', name: 'Zoe Caryl', url: 'https://communication.illinois.edu/directory/profile/zoenc2',
+    role: { es: 'Estudiante de maestría (M.A.), Departamento de Comunicación; laboratorio ALERTAS', en: 'M.A. student, Department of Communication; ALERTAS lab' },
+    bio: { es: 'Investiga cómo el lenguaje del pronóstico, el diseño de los mensajes de alerta y las prácticas de comunicación institucional influyen en la comprensión y las decisiones del público ante crecidas repentinas y ríos atmosféricos. Ayuda a dirigir la primera encuesta nacional bilingüe (inglés/español) sobre la comprensión de los ríos atmosféricos y su escala de riesgo. Tiene un B.S. en Ciencias Atmosféricas de Illinois.',
+           en: 'Researches how forecast language, warning message design and institutional communication practices shape public understanding and decisions before and during flash floods and atmospheric rivers. She helps lead the first nationwide bilingual (English/Spanish) survey of public understanding of atmospheric rivers and their risk scale. She holds a B.S. in Atmospheric Sciences from Illinois.' } },
+  { g: 1, id: 'alc12', name: 'Anthony Corrales',
+    role: { es: 'Estudiante de maestría (asesores: Joseph Trujillo-Falcón y Zhuo Wang)', en: 'M.S. student (advisors: Joseph Trujillo-Falcón and Zhuo Wang)' },
+    bio: { es: 'Trabaja en la intersección entre la meteorología tropical y las ciencias sociales, en especial la comunicación de riesgos multilingüe. En el laboratorio ALERTAS realiza encuestas nacionales y trabajo de campo en inglés y español.',
+           en: 'Works at the intersection of tropical meteorology and social science, especially multilingual risk communication. In the ALERTAS lab he runs nationwide surveys and fieldwork in English and Spanish.' } },
+  { g: 1, id: 'ed24', name: 'Elisabet De Jesús-Otero',
+    role: { es: 'Estudiante de doctorado, laboratorio ALERTAS', en: 'PhD student, ALERTAS lab' },
+    bio: { es: 'Investiga la comunicación de riesgos y los eventos extremos en el Caribe, y analiza cómo responden los hispanohablantes a amenazas como corrientes de resaca y huracanes. Tiene una maestría en Meteorología de Saint Louis University y recibió la pasantía NOAA William M. Lapenta en 2024.',
+           en: 'Researches risk communication and extreme weather in the Caribbean, analyzing how Spanish speakers respond to threats such as rip currents and hurricanes. She holds an M.S. in Meteorology from Saint Louis University and received the NOAA William M. Lapenta Internship in 2024.' } },
+  { g: 1, id: 'alfonso8', name: 'Alfonso Ladino-Rincón',
+    role: { es: 'Estudiante de doctorado (asesor: Steve Nesbitt)', en: 'PhD student (advisor: Steve Nesbitt)' },
+    bio: { es: 'Becario Fulbright. Estudia la microfísica de nubes cálidas y lluvia, y usa aprendizaje automático con radares satelitales y de superficie para reducir la incertidumbre en la estimación de la lluvia. Promueve los datos abiertos y el software de código abierto en Python.',
+           en: 'A Fulbright scholar who studies warm-cloud and rain microphysics, using machine learning with spaceborne and ground radars to reduce uncertainty in rainfall estimates. He advocates for open data and open-source Python software.' } },
+  { g: 1, id: 'deffip2', name: 'Deffi Putri',
+    role: { es: 'Estudiante de doctorado (asesora: Francina Dominguez)', en: 'PhD student (advisor: Francina Dominguez)' },
+    bio: { es: 'Investiga la precipitación extrema dentro de la iniciativa MURI. Antes fue pronosticadora del aeropuerto Iskandar en Kalimantan para la agencia meteorológica de Indonesia (BMKG).',
+           en: 'Researches extreme precipitation within the MURI initiative. She was previously an aviation forecaster at Iskandar Airport in Kalimantan for Indonesia’s meteorological agency (BMKG).' } },
+];
+const T = {
+  es: { title: 'Quiénes somos', back: '← Tablero de Guayas', btn: 'EN', prof: 'Perfil completo',
+        lead: 'El Tablero de Guayas lo desarrolla un equipo del Departamento de Clima, Meteorología y Ciencias Atmosféricas (CliMAS) de la Universidad de Illinois Urbana-Champaign, que une ciencias atmosféricas, hidrología y comunicación de riesgos para apoyar la preparación ante El Niño en la provincia del Guayas.',
+        groups: ['Investigadores principales', 'Equipo'],
+        foot: 'Pronóstico no oficial del Departamento de Clima, Meteorología y Ciencias Atmosféricas, Universidad de Illinois. Consulte siempre los avisos y alertas oficiales del <a href="https://www.inamhi.gob.ec/" target="_blank" rel="noopener">INAMHI</a>. <a href="aviso-legal.html">Aviso legal</a> · <a href="como-usar.html">Cómo usar</a>.' },
+  en: { title: 'Who we are', back: '← Guayas Dashboard', btn: 'ES', prof: 'Full profile',
+        lead: 'The Guayas Dashboard is developed by a team in the Department of Climate, Meteorology & Atmospheric Sciences (CliMAS) at the University of Illinois Urbana-Champaign, bringing together atmospheric science, hydrology and risk communication to support El Niño preparedness in Guayas Province.',
+        groups: ['Principal investigators', 'Team'],
+        foot: 'Unofficial forecast of the Department of Climate, Meteorology &amp; Atmospheric Sciences, University of Illinois. Always check official warnings and alerts from <a href="https://www.inamhi.gob.ec/" target="_blank" rel="noopener">INAMHI</a>. <a href="aviso-legal.html">Legal notice</a> · <a href="como-usar.html">How to use</a>.' },
+};
+let lang = 'es';
+try { lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('tg.lang') || 'es'; } catch (e) {}
+function render() {
+  const L = T[lang];
+  document.documentElement.lang = lang; document.title = `${L.title} · ${lang === 'es' ? 'Tablero de Guayas' : 'Guayas Dashboard'}`;
+  document.getElementById('h1').textContent = L.title;
+  document.getElementById('lead').textContent = L.lead;
+  document.getElementById('back').textContent = L.back;
+  document.getElementById('lang').textContent = L.btn;
+  document.getElementById('foot').innerHTML = L.foot;
+  document.getElementById('groups').innerHTML = L.groups.map((g, i) => `<h2>${g}</h2><div class="grid">` +
+    PEOPLE.filter((p) => p.g === i).map((p) => `<article class="person">
+      <img src="assets/people/${p.id}.jpg" alt="${p.name}" loading="lazy" width="96" height="120">
+      <h3>${p.name}</h3><p class="role">${p.role[lang]}</p>
+      <a class="prof" href="${p.url || P + p.id}" target="_blank" rel="noopener">${L.prof} ↗</a>
+      <p class="bio">${p.bio[lang]}</p></article>`).join('') + '</div>').join('');
+}
+document.getElementById('lang').onclick = () => { lang = lang === 'es' ? 'en' : 'es'; try { localStorage.setItem('tg.lang', lang); } catch (e) {} render(); if (window.renderCopy) renderCopy(); };
+render();
+</script>
+<div id="copy" class="copy"></div>
+<script src="partners.js?v=202611020137"></script>
+<script src="copyright.js?v=202611020137"></script>
+</body>
+</html>
